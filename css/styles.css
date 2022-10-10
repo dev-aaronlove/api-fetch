@@ -9,19 +9,16 @@ body {
   max-width: 50%; 
 }
 
-.filter-wrapper { position: relative; }
+.filter-wrapper { 
+  display: flex;
+  align-items: center;
+
+}
 
 .filter-icon {
-  position: absolute;
   display: flex;
   justify-content: center;
-  align-items: center;
-  left: 0px;
-  height: 100%;
-  pointer-events: none;
   width: 35px;
-  z-index: 10;
-  background: white;
 }
 
 .filter-icon:hover { cursor: pointer; }
