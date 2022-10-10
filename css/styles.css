@@ -1,0 +1,103 @@
+html,
+body { 
+  margin: 0; 
+  padding: 0;
+}
+
+.container { 
+  margin: 20px auto; 
+  max-width: 50%; 
+}
+
+.filter-wrapper { position: relative; }
+
+.filter-icon {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 0px;
+  height: 100%;
+  pointer-events: none;
+  width: 35px;
+  z-index: 10;
+  background: white;
+}
+
+.filter-icon:hover { cursor: pointer; }
+
+.filter-icon:hover { cursor: pointer; }
+
+.favorite-tasty-cards,
+.tasty-cards { 
+  display: flex;
+  padding: 10px 15px;
+  border: 1px solid black;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.tasty-card {
+  position: relative;
+  min-width: 250px;
+  max-width: 35%;
+  height: 215px;
+  border: 1px solid blue;
+  border-radius: 5%;
+  padding: 10px;
+  transition: all 300ms ease-in-out;
+  margin-bottom: 20px;
+}
+
+.tasty-card:hover {
+  box-shadow: 0 5px 5px blue;
+  transform: translateY(-5px);
+  cursor: pointer;
+}
+
+.top { 
+  display: flex; 
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.thumbnail {
+  background-size: cover;
+  background-position: 100%;
+  border: 1px solid black;
+  border-radius: 50%;
+  box-shadow: 0 3px 6px black;
+  width: 75px;
+  height: 75px;
+}
+
+.header { 
+  text-overflow: ellipsis;
+  width: 150px;
+ } 
+
+.details { 
+  display: flex; 
+  justify-content: space-evenly; 
+}
+
+.description { 
+  -webkit-box-orient: vertical;
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  max-height: 75px;
+  line-height: 1.2;
+}
+
+.fav-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 10;
+  transition: all 100ms ease-in-out;
+}
+
+.fav-btn:hover { transform: scale(1.2); }
+
+.favorite .bottom .fav-btn { color: red; }
