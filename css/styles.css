@@ -29,7 +29,7 @@ body {
 .tasty-cards { 
   display: flex;
   padding: 10px 15px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   flex-wrap: wrap;
   justify-content: space-around;
 }
@@ -96,5 +96,3 @@ body {
 }
 
 .fav-btn:hover { transform: scale(1.2); }
-
-.favorite .bottom .fav-btn { color: red; }
