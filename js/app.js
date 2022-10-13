@@ -1,14 +1,12 @@
 // Variables
-let tastyData = [];
-let favList = [];
-const allCardsParent = document.querySelector('.tasty-cards');
+let tastyCardsData = [];
+let favCardsData = [];
+const tastyCardsFiltered = [];
+const favCardsFiltered = [];
+const tastyCardsParent = document.querySelector('.tasty-cards');
 const favCardsParent = document.querySelector('.favorite-tasty-cards');
-const unfilteredAllCards = {};
-const filteredAllCards = {};
-const unfilteredFavCards = {};
-const filteredFavCards = {};
-const toggleFilterAllCards = document.querySelector('.all-cards-filter');
-const toggleFilterFavCards = document.querySelector('.fav-cards-filter');
+const tastyFilterBtn = document.querySelector('.all-cards-filter');
+const favFilterBtn = document.querySelector('.fav-cards-filter');
 
 //API Fetch
 const options = {
@@ -21,16 +19,22 @@ const options = {
 
 fetch('https://tasty.p.rapidapi.com/recipes/list?from=0&size=10&tags=under_30_minutes&q=chicken', options)
 	.then(response => response.json())
-	.then(response => {
-    console.log(response.results);
-    tastyData = response.results;
-  })
+	.then(response => tastyCardsData = response.results)
+  .then(() => console.log(tastyCardsData)) //TODO: remove after testing
+  .then(() => drawCards(tastyCardsData, tastyCardsParent))
+  // .then(() => createEventListeners())
 	.catch(err => console.error(err));
 
 
 //Helper Functions
-const createCards = () => {
-  tastyData.forEach(elem => {
+const clearCards = () => {
+  tastyCardsParent.innerHTML = "";
+  favCardsParent.innerHTML = "";
+}
+
+const drawCards = (cardsData, parentDiv) => {
+  cardsData.forEach(elem => {
+    let cardId = elem.id;
     let name = elem.name;
     let servings = `${elem.num_servings} servings`;
     let time = `${elem.total_time_minutes} minutes`;
@@ -63,6 +67,8 @@ const createCards = () => {
     thumbnailDiv.classList.add('thumbnail');
     top.classList.add('top');
     tastyCard.classList.add('tasty-card');
+    if (parentDiv === favCardsParent) tastyCard.classList.add('favorite');
+    tastyCard.id = cardId;
 
     thumbnailDiv.style.backgroundImage = `url(${thumbnail})`;
     descriptionDiv.innerHTML = description;
@@ -76,50 +82,49 @@ const createCards = () => {
     header.append(nameDiv, details);
     top.append(thumbnailDiv, header);
     tastyCard.append(top, bottom);
-    allCardsParent.append(tastyCard);
+    parentDiv.append(tastyCard);
+  })
+
+  createEventListeners();
+}
+
+const createEventListeners = () => {
+  const heartBtns = document.querySelectorAll('.fav-btn');
+  heartBtns.forEach(heartBtn => {
+    heartBtn.addEventListener('click', () => {
+      if(heartBtn.parentElement.parentElement.parentElement.classList.contains('tasty-cards')) {
+        let tastyCardObj = {};
+        tastyCardsData.map(object => {
+          if (object.id === Number(heartBtn.parentElement.parentElement.id)) tastyCardObj = object;
+        });
+        
+        let tastyCardIndex = tastyCardsData.findIndex(object => object === tastyCardObj);
+        favCardsData.push(tastyCardsData[tastyCardIndex]);
+        tastyCardsData = tastyCardsData.filter(object => object !== tastyCardsData[tastyCardIndex])
+        clearCards();
+        drawCards(tastyCardsData, tastyCardsParent);
+        drawCards(favCardsData, favCardsParent);
+      } else {
+        let favCardObj = {};
+        favCardsData.map(object => {
+          if (object.id === Number(heartBtn.parentElement.parentElement.id)) favCardObj = object;
+        });
+        
+        let favCardIndex = favCardsData.findIndex(object => object === favCardObj);
+        tastyCardsData.push(favCardsData[favCardIndex]);
+        favCardsData = favCardsData.filter(object => object !== favCardsData[favCardIndex])
+        clearCards();
+        drawCards(tastyCardsData, tastyCardsParent);
+        drawCards(favCardsData, favCardsParent);
+      }
+    })
   })
 }
 
-const createFilters = () => {
-  let names = [];
-  allCardsParent.forEach(elem => {
-    names.push(elem.name);
-  })
-  console.log('unsorted names: ', names);
-  names.sort();
-  console.log('sorted names: ', names);
-}
-
-//App
-setTimeout(() => createCards(), 2500);
-setTimeout(() => createFilters(), 2800);
-
-//Event Listeners
-toggleFilterAllCards.addEventListener('click', function() {
-  allCardsSection = document.querySelector('.tasty-cards');
-  if (!allCardsSection.className.includes('filtered')) {
-    allCardsParent = filteredAllCards;
-    allCardsSection.classList.add('filtered');
-  }
-  else {
-    allCardsParent = unfilteredAllCards;
-    allCardsSection.classList.remove('filtered');
-  }
-})
-
-toggleFilterFavCards.addEventListener('click', function() {
-  favCardsSection = document.querySelector('.favorite-tasty-cards');
-  if (!favCardsSection.className.includes('filtered')) {
-    allCardsParent = filteredFavCards;
-    favCardsSection.classList.add('filtered');
-  }
-  else {
-    favCardsParent = unfilteredFavCards;
-    favCardsSection.classList.remove('filtered');
-  }
-})
 
 //eventListener click for click heart icon
-document.addEventListener
+
   //if class "favorite" NOT present, then add it and append child to favorite parent element.
   //If class "favorite" present, then remove it and remove child from favorite parent element.
+
+
