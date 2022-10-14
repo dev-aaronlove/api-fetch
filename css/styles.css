@@ -12,24 +12,25 @@ body {
 .filter-wrapper { 
   display: flex;
   align-items: center;
-
 }
 
 .filter-icon {
   display: flex;
   justify-content: center;
   width: 35px;
+  transition: all 100ms ease-in-out;
 }
 
-.filter-icon:hover { cursor: pointer; }
-
-.filter-icon:hover { cursor: pointer; }
+.filter-icon:hover { 
+  cursor: pointer; 
+  transform: scale(1.2);
+}
 
 .favorite-tasty-cards,
 .tasty-cards { 
   display: flex;
   padding: 10px 15px;
-  /* border: 1px solid black; */
+  border: 1px solid black;
   flex-wrap: wrap;
   justify-content: space-around;
 }

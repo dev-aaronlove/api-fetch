@@ -1,8 +1,7 @@
 // Variables
 let tastyCardsData = [];
 let favCardsData = [];
-const tastyCardsFiltered = [];
-const favCardsFiltered = [];
+let order = false;
 const tastyCardsParent = document.querySelector('.tasty-cards');
 const favCardsParent = document.querySelector('.favorite-tasty-cards');
 const tastyFilterBtn = document.querySelector('.all-cards-filter');
@@ -22,7 +21,7 @@ fetch('https://tasty.p.rapidapi.com/recipes/list?from=0&size=10&tags=under_30_mi
 	.then(response => tastyCardsData = response.results)
   .then(() => console.log(tastyCardsData)) //TODO: remove after testing
   .then(() => drawCards(tastyCardsData, tastyCardsParent))
-  // .then(() => createEventListeners())
+  .then(() => createFilterEvents())
 	.catch(err => console.error(err));
 
 
@@ -31,6 +30,26 @@ const clearCards = () => {
   tastyCardsParent.innerHTML = "";
   favCardsParent.innerHTML = "";
 }
+
+const sortData = ((cardsData) => {
+  console.log('called sortData');
+  order = !order;
+  cardsData.sort((a, b) => {
+    const nameA = a.name.toUpperCase();
+    const nameB = b.name.toUpperCase();
+    if (order) {
+      if (nameA < nameB) return -1
+      if (nameA > nameB) return 1
+      return 0;
+    }
+    else {
+      if (nameA > nameB) return -1
+      if (nameA < nameB) return 1
+      return 0;
+    }
+  })
+  return cardsData;
+})
 
 const drawCards = (cardsData, parentDiv) => {
   cardsData.forEach(elem => {
@@ -88,6 +107,8 @@ const drawCards = (cardsData, parentDiv) => {
   createEventListeners();
 }
 
+
+//Event Listeners
 const createEventListeners = () => {
   const heartBtns = document.querySelectorAll('.fav-btn');
   heartBtns.forEach(heartBtn => {
@@ -121,10 +142,21 @@ const createEventListeners = () => {
   })
 }
 
-
-//eventListener click for click heart icon
-
-  //if class "favorite" NOT present, then add it and append child to favorite parent element.
-  //If class "favorite" present, then remove it and remove child from favorite parent element.
-
-
+const createFilterEvents = () => {
+  const filterBtns = document.querySelectorAll('.filter-icon');
+  filterBtns.forEach(filterBtn => {
+    filterBtn.addEventListener('click', () => {
+      if (filterBtn.parentElement.parentElement.lastElementChild.classList.contains('tasty-cards')) {
+        tastyCardsData = sortData(tastyCardsData);
+        clearCards();
+        drawCards(tastyCardsData, tastyCardsParent);
+        drawCards(favCardsData, favCardsParent);
+      } else {
+        favCardsData = sortData(favCardsData);
+        clearCards();
+        drawCards(favCardsData, favCardsParent);
+        drawCards(tastyCardsData, tastyCardsParent);
+      }
+    })
+  })
+}
