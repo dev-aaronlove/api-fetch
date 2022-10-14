@@ -12,7 +12,10 @@ body {
 .filter-wrapper { 
   display: flex;
   align-items: center;
+  justify-content: center;
 }
+
+.filter-wrapper .headers { text-align: center; }
 
 .filter-icon {
   display: flex;
@@ -30,7 +33,6 @@ body {
 .tasty-cards { 
   display: flex;
   padding: 10px 15px;
-  border: 1px solid black;
   flex-wrap: wrap;
   justify-content: space-around;
 }
@@ -97,3 +99,4 @@ body {
 }
 
 .fav-btn:hover { transform: scale(1.2); }
+.favorite .fav-btn { color: red; }

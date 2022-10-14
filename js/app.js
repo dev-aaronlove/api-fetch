@@ -19,7 +19,6 @@ const options = {
 fetch('https://tasty.p.rapidapi.com/recipes/list?from=0&size=10&tags=under_30_minutes&q=chicken', options)
 	.then(response => response.json())
 	.then(response => tastyCardsData = response.results)
-  .then(() => console.log(tastyCardsData)) //TODO: remove after testing
   .then(() => drawCards(tastyCardsData, tastyCardsParent))
   .then(() => createFilterEvents())
 	.catch(err => console.error(err));
@@ -29,6 +28,17 @@ fetch('https://tasty.p.rapidapi.com/recipes/list?from=0&size=10&tags=under_30_mi
 const clearCards = () => {
   tastyCardsParent.innerHTML = "";
   favCardsParent.innerHTML = "";
+}
+
+const calcTotalTime = (cardData) => {
+  let total = 0;
+  let totalHrs = 0;
+  let totalMins = 0;
+  cardData.forEach(elem => {
+    total += elem.total_time_minutes;
+  })
+  totalHrs = total / 60;
+  document.querySelector('.total-time').innerHTML = `${totalHrs.toFixed(2)} Hours!`;
 }
 
 const sortData = ((cardsData) => {
@@ -105,6 +115,7 @@ const drawCards = (cardsData, parentDiv) => {
   })
 
   createEventListeners();
+  calcTotalTime(tastyCardsData);
 }
 
 
